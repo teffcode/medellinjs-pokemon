@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Pokemon</title>
+</head>
+<body>
+  <img src="" alt="" id="image">
+  <p id="name"></p>
+  <form action="" id="form">
+    <input type="text" name="name">
+    <button>Button</button>
+  </form>
+
+  <script>
+    console.log("hola")
+
+    const $image = document.querySelector('#image');
+    const $name = document.querySelector('#name');
+
+    const $form = document.querySelector('#form');
+    console.log($form)
+    $form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const form = new FormData($form);
+      const id = form.get('name');
+      const pokemon = await getPokemon(id);
+
+      $image.setAttribute('src', pokemon.sprites.front_default);
+      $name.innerHTML = `<strong>${pokemon.name}</strong>`;
+    });
+
+    // Promesas
+    new Promise((todoBien, todoMal) => {
+      // acaso hay bandeja paisa
+      setTimeout(() => {
+        if(true){
+          todoBien('Hay bandeja paisa')
+        } else {
+          todoMal('No hay bandeja paisa')
+        }
+      }, 3000)
+    })
+    .then((mensaje) => {
+      console.log(mensaje)
+    })
+    .catch((mensaje) => {
+      console.log(mensaje)
+    })
+
+    // Fetch
+    fetch('https://pokeapi.co/api/v2/pokemon/1/')
+      .then((respuesta) => {
+        console.log(respuesta)
+        respuesta.json()
+          .then((pokemon) => {
+            console.log(pokemon)
+          })
+      })
+      .catch()
+
+    // Async Await - funciones asíncronas
+    const BASE_API = 'https://pokeapi.co/api/v2/pokemon/';
+    async function getPokemon(id) {
+      const response = await fetch(`${BASE_API}${id}/`);
+      const pokemon = await response.json();
+      // console.log(pokemon)
+      return pokemon
+    }
+
+    getPokemon('pikachu')
+
+
+  </script>
+</body>
+</html>
